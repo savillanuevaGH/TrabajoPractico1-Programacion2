@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/style.css">
     <title>Lana & Lino</title>
 </head>
 <body>
@@ -34,6 +38,10 @@
 
                     <li>
                         <a href="#carrito">🛒</a>
+                    </li>
+
+                    <li>
+                        <button onclick="toggleTheme()">Cambiar tema</button>
                     </li>
 
                     <li>
@@ -78,10 +86,21 @@
         <div>
             <p>
                 Página desarrollada por: <br>
-                <a href="http://github.com/lavazquezGH" target="_blank" rel="noopener noreferrer">Laila Vazquez</a> & <br>
+                <a href="http://github.com/lavazquezGH" target="_blank" rel="noopener noreferrer">Laila Vazquez</a> & 
                 <a href="http://github.com/savillanuevaGH" target="_blank" rel="noopener noreferrer">Santiago Villanueva</a>
             </p>
         </div>
     </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+        }
+    </script>
 </body>
 </html>
