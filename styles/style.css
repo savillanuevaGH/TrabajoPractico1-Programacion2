@@ -1,3 +1,5 @@
+@import url('./header.css');
+
 /* Modo Claro */
 :root {
     --color-bg: #f9fafb;
@@ -20,6 +22,12 @@
     --color-primary-hover: #60a5fa;
     --color-border: #374151;
     --color-accent: #1e3a8a;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 html {
@@ -45,23 +53,42 @@ a {
     }
 }
 
+button,
+select,
+input,
+textarea {
+    font-family: inherit;
+    color: var(--color-text-secondary);
+    accent-color: var(--color-accent);
+    border: 1px solid var(--color-primary);
+}
+
+input {
+    padding: 4px 6px;
+    background: var(--color-bg-secondary);
+    border-radius: 4px;
+}
+
 button {
     padding: 4px 8px;
-    font-family: 'Inter', serif;
     font-weight: 600;
-    color: var(--color-text-secondary);
 
     background: var(--color-accent);
     border: 2px solid var(--color-border);
     border-radius: .4rem;
+
+    transition: transform .2s ease-in, box-shadow .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 1px 2px var(--color-primary-hover);
+    }
 }
 
 select {
     padding: 4px;
 
-    font-family: 'Inter', serif;
     font-weight: 400;
-    color: var(--color-text-secondary);
 
     background: var(--color-bg-secondary);
     border: 2px solid var(--color-border);
