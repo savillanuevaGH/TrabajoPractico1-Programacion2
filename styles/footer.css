@@ -1,0 +1,29 @@
+footer {
+    min-width: 100%;
+    padding: .5rem 1rem;
+
+    position: sticky;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-top: 2px solid var(--color-text);
+}
+
+.footer__section {
+    margin: 1rem;
+    min-width: 30%;
+
+    text-align: start;
+
+    &:nth-child(1),
+    &:nth-child(2) {
+        border-right: 2px solid var(--color-text-secondary);
+    }
+}
+
+.footer__section ul li {
+    padding-right: 0;
+}
