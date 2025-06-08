@@ -34,8 +34,8 @@
             <nav>
                 <ul>
                     <li>
-                        <button>Iniciar Sesión</button>
-                        <button>Cerrar Sesión</button>
+                        <button popovertarget="log-in">Iniciar Sesión</button>
+                        <button popovertarget="register">Registrarse</button>
                     </li>
 
                     <li>
@@ -93,6 +93,69 @@
             </p>
         </div>
     </footer>
+
+    <dialog popover id="log-in">
+        <form id="login-form">
+            <fieldset>
+                <legend>Iniciar Sesión</legend>
+
+                <label for="user-mail">Correo Electrónico</label>
+                <input type="email" name="user-mail" id="user-email">
+
+                <label for="user-pass">Contraseña</label>
+                <input type="password" name="user-pass" id="user-password">
+            </fieldset>
+
+            <button form="login-form" class="big">
+                Enviar
+            </button>
+        </form>
+
+        <div>
+            <p>¿No tienes una cuenta? 
+                <a onclick="document.getElementById('register').showModal(),
+                                document.getElementById('log-in').close()">
+                Registrarse</a>
+            </p>
+        </div>
+    </dialog>
+
+    <dialog popover id="register">
+        <form id="register-form">
+            <fieldset>
+                <legend>Registrarse</legend>
+
+                <label for="name">Nombre:</label>
+                <input type="text" name="name" id="register-user-name">
+
+                <label for="surname">Apellido:</label>
+                <input type="text" name="surname" id="register-user-surname">
+
+                <label for="direction">Dirección:</label>
+                <input type="text" name="direction" id="register-user-direction">
+
+                <label for="phonenumber">Teléfono:</label>
+                <input type="tel" name="phonenumber" id="register-user-phonenumber">
+
+                <label for="mail">Apellido:</label>
+                <input type="email" name="mail" id="register-user-email">
+
+                <label for="pass">Contraseña:</label>
+                <input type="password" name="pass" id="register-user-password">
+            </fieldset>
+
+            <button form="register-form" class="big">
+                Enviar
+            </button>
+        </form>
+        <div>
+            <p>¿Ya tienes una cuenta? 
+            <a onclick="document.getElementById('log-in').showModal(),
+                            document.getElementById('register').close()">
+            Inícia Sesión</a>
+            </p>
+        </div>
+    </dialog>
 
     <script>
         function toggleTheme() {

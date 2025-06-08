@@ -1,0 +1,62 @@
+dialog {
+    margin: auto;
+    padding: .8rem;
+
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: .4rem;
+
+    animation: showUp .3s ease-in-out;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, .5);
+}
+
+:popover-open {
+    animation: showUp .6s ease-in-out;
+}
+
+dialog form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .8rem;
+
+    color: var(--color-text);
+}
+
+dialog form fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    border: 2px solid var(--color-text);
+    border-radius: 6px;
+}
+
+dialog form fieldset legend {
+    padding: .2rem .4rem;
+
+    font-size: 1.2rem;
+    font-weight: bolder;
+    text-align: center;
+
+    background: var(--color-bg);
+    border-radius: 6px 6px 0 0;
+}
+
+dialog form fieldset label {
+    color: var(--color-text-secondary);
+}
+
+@keyframes showUp {
+    from {
+        opacity: 0;
+        transform: scale(.6);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
