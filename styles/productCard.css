@@ -1,0 +1,52 @@
+.product-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+}
+
+.product-details {
+    padding: 20px;
+}
+
+.product-details h2 {
+    margin: 0 0 10px;
+}
+
+.cuotas {
+    margin: 15px 0;
+}
+
+#add-to-cart {
+    background-color: var(--color-accept);
+    border: none;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#add-to-cart:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.hidden {
+    display: none;
+}
+
+#sin-stock {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
