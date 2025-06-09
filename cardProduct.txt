@@ -1,0 +1,28 @@
+<article class="product-card">
+    <img src="https://placehold.co/300x200/png" alt="Producto" class="product-img" />
+            
+    <div class="product-details">
+        <h2>Product Name</h2>
+        <p class="description">Product Description</p>
+            
+        <p><strong>Talles: </strong>Product Sizes</p>
+        <p><strong>Color: </strong>Product Color/p>
+        <p><strong>Stock: </strong> <span id="stock">Stock</span> unidades</p>
+        <p><strong>Precio: </strong> $<span id="precio">Price</span></p>
+            
+        <div class="cuotas">
+            <label for="cuotas">Cuotas:</label>
+            <select id="cuotas">
+                <option value="1">1 cuota</option>
+                <option value="3">3 cuotas</option>
+                <option value="6">6 cuotas</option>
+                <option value="9">9 cuotas</option>
+                <option value="12">12 cuotas</option>
+            </select>
+            <p id="precio-cuota">Precio por cuota: $12000</p>
+        </div>
+            
+        <button id="add-to-cart">Agregar al carrito</button>
+        <p id="sin-stock" class="hidden">Sin stock disponible</p>
+    </div>
+</article>
