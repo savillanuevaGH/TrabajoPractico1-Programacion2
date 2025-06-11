@@ -1,3 +1,11 @@
+:root {
+    --color-header-bg: hsl(0, 0%, 100%, .8);
+}
+
+[data-theme="dark"] {
+    --color-header-bg: hsl(215, 28%, 17%, .8);
+}
+
 header {
     width: 100%;
     padding: .5rem 1rem;
@@ -5,10 +13,18 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: var(--color-header-bg);
+    backdrop-filter: blur(2px);
     border-bottom: 2px solid var(--color-text);
 
     position: sticky;
     top: 0;
+}
+
+header .icon:not(button svg) {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-primary, currentColor);
 }
 
 .title {
@@ -41,17 +57,18 @@ header {
 
 .search {
     position: relative;
+}
 
-    button {
-        position: absolute;
-        right: 0;
+.search button {
+    all: initial;
+    position: absolute;
+    right: 4px;
+    top: 0;
+    cursor: pointer;
 
+    &:hover {
         background: none;
-        border: none;
-
-        &:hover {
-            box-shadow: none;
-        }
+        box-shadow: none;
     }
 }
 

@@ -2,9 +2,6 @@ footer {
     min-width: 100%;
     padding: .5rem 1rem;
 
-    position: sticky;
-    bottom: 0;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -25,5 +22,24 @@ footer {
 }
 
 .footer__section ul li {
+    width: max-content;
     padding-right: 0;
+}
+
+.social li a {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: .5rem;
+
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.social li a:hover { 
+    color: var(--color-text);
+}
+.social li a:hover > .icon {
+    filter: brightness(1.2);
+    animation: bounce .4s ease;
 }
