@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/TrabajoPractico1-Programacion2/styles/style.css">
     <title>Lana & Lino</title>
 </head>
 <body>
@@ -120,52 +120,62 @@
         </div>
     </dialog>
 
-    <dialog popover id="register">
-        <form id="register-form">
-            <fieldset>
-                <legend>Registrarse</legend>
+    <dialog id="register" popover>
+    <form id="register-form">
+        <fieldset>
+            <legend>Registrarse</legend>
 
-                <label for="name">Nombre:</label>
-                <input type="text" name="name" id="register-user-name">
+            <div id="message-container" style="margin-bottom: 15px; font-weight: bold;">
+                </div>
 
-                <label for="surname">Apellido:</label>
-                <input type="text" name="surname" id="register-user-surname">
+            <label for="register-user-name">Nombre:</label>
+            <input type="text" name="name" id="register-user-name" placeholder="Tu nombre" required aria-required="true">
 
-                <label for="direction">Dirección:</label>
-                <input type="text" name="direction" id="register-user-direction">
+            <label for="register-user-surname">Apellido:</label>
+            <input type="text" name="surname" id="register-user-surname" placeholder="Tu apellido" required aria-required="true">
 
-                <label for="phonenumber">Teléfono:</label>
-                <input type="tel" name="phonenumber" id="register-user-phonenumber">
+            <label for="register-user-direction">Dirección:</label>
+            <input type="text" name="direction" id="register-user-direction" placeholder="Calle, número, piso/depto.">
 
-                <label for="mail">Apellido:</label>
-                <input type="email" name="mail" id="register-user-email">
+            <label for="register-user-phonenumber">Teléfono:</label>
+            <input type="tel" name="phonenumber" id="register-user-phonenumber" placeholder="Ej: 3421234567">
 
-                <label for="pass">Contraseña:</label>
-                <input type="password" name="pass" id="register-user-password">
-            </fieldset>
+            <label for="register-user-email">Email:</label>
+            <input type="email" name="mail" id="register-user-email" placeholder="tu@email.com" required aria-required="true">
 
-            <button form="register-form" class="big">
-                Enviar
-            </button>
-        </form>
-        <div>
-            <p>¿Ya tienes una cuenta? 
-            <a onclick="document.getElementById('log-in').showModal(),
-                            document.getElementById('register').close()">
-            Inícia Sesión</a>
-            </p>
-        </div>
-    </dialog>
+            <label for="register-user-password">Contraseña:</label>
+            <input type="password" name="pass" id="register-user-password" placeholder="Mínimo 6 caracteres" required aria-required="true" minlength="6">
+            
+            <label for="register-user-confirm-password">Confirmar Contraseña:</label>
+            <input type="password" id="register-user-confirm-password" placeholder="Repite tu contraseña" required aria-required="true">
 
-    <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.removeAttribute('data-theme');
-            } else {
-                html.setAttribute('data-theme', 'dark');
-            }
+        </fieldset>
+
+        <button type="submit" class="big" id="register-submit-button">
+            Registrar
+        </button>
+    </form>
+
+    <div class="dialog-footer">
+        <p>¿Ya tienes una cuenta? 
+            <a href="#" onclick="document.getElementById('log-in').showModal(); document.getElementById('register').close(); return false;">
+                Inicia Sesión
+            </a>
+        </p>
+        <button class="close-button" popovertarget="register" popovertargetaction="hide">Cerrar</button>
+    </div>
+</dialog>
+
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        if (html.getAttribute('data-theme') === 'dark') {
+            html.removeAttribute('data-theme');
+        } else {
+            html.setAttribute('data-theme', 'dark');
         }
-    </script>
+    }
+</script>
+    <script src="/TrabajoPractico1-Programacion2/js/usuario.js"></script>
 </body>
 </html>
