@@ -1,8 +1,6 @@
-const API_ROUTE = process.env.API;
-
-async function loginUsuario(user, pass) {
+export async function loginUsuario(user, pass) {
     try {
-      const res = await fetch(API_ROUTE + '/api/login', {
+      const res = await fetch('http://localhost:4000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ usuario: user, password: pass })

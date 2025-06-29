@@ -136,7 +136,7 @@
                 <input type="password" name="user-pass" id="user-password">
             </fieldset>
 
-            <button form="login-form" class="big">
+            <button type="submit" class="big">
                 Enviar
             </button>
         </form>
@@ -172,9 +172,11 @@
 
                 <label for="pass">Contraseña:</label>
                 <input type="password" name="pass" id="register-user-password">
+
+                <div id="message-container"></div>
             </fieldset>
 
-            <button form="register-form" class="big">
+            <button type="submit" class="big" id="register-button">
                 Enviar
             </button>
         </form>
@@ -187,6 +189,7 @@
         </div>
     </dialog>
 
+    <script src="./js/index.js" type="module"></script>
     <script>
         function toggleTheme() {
             const html = document.documentElement;

@@ -50,6 +50,21 @@ dialog form fieldset label {
     color: var(--color-text-secondary);
 }
 
+.message-success,
+.message-error {
+    padding: 4px;
+    font-weight: bolder;
+    border: 1px dashed var(--color-border);
+}
+
+.message-success {
+    color: olivedrab;
+}
+
+.message-error {
+    color: firebrick;
+}
+
 @keyframes showUp {
     from {
         opacity: 0;
