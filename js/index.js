@@ -50,9 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             productContainer.innerHTML = '<p>No hay productos en esta categoría.</p>';
             return;
         }
-
-          console.log(productosFiltrados);
-          console.log(categorias);
       
         productosFiltrados.forEach(producto => {
             const categoria = categorias.find(cat => 
@@ -62,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             productCard.classList.add('product-card');
       
           productCard.innerHTML = `
-            <img src="https://placehold.co/300x200/png?text=${producto.producto}" alt="${producto.producto}" class="product-img" />
+          <img src="https://placehold.co/300x200/png?text=${producto.producto}" alt="${producto.producto}" class="product-img" />
             <div class="product-details">
                 <h2>${producto.producto}</h2>
                 <p class="description">${producto.descripcion}</p>
@@ -81,7 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <p id="precio-cuota">${producto.precio || 'Sin asignar'}</p>
         </div>
             </div>
-            <button id="add-to-cart" onclick="agregarAlCarrito(${producto.idProducto})">Agregar al carrito</button>
+            <button class="add-to" onclick="agregarAFavoritos(${producto.idProducto})">❤️ Agregar a Favoritos</button>
+            <button class="add-to" onclick="agregarAlCarrito(${producto.idProducto})">Agregar al carrito</button>
     `;
       
           productContainer.appendChild(productCard);
@@ -96,7 +94,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoriesSelect = document.getElementById('categories-filter');
     categoriesSelect.addEventListener('change', async (e) => {
         await mostrarProductos();
-    }); 
+    });
+
+    document.getElementById('btn-favorites').addEventListener('click', () => {
+      mostrarFavoritosEnDialog();
+      document.getElementById('favorites').showModal();
+    });
+
+    document.getElementById('cerrar-favoritos').addEventListener('click', () => {
+      document.getElementById('favorites').close();
+    });
+
+
+    async function agregarAFavoritos(idProducto) {
+      const idUsuario = localStorage.getItem('id_usuario');
+      const token = localStorage.getItem('token');
+    
+      if (!idUsuario || !token) {
+        alert('Debes iniciar sesión para agregar favoritos.');
+        return;
+      }
+    
+      try {
+        const res = await fetch('http://localhost:4000/api/agregarFavorito', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id_producto: Number(idProducto),
+            id_usuario: Number(idUsuario)
+          })
+        });
+    
+        const data = await res.json();
+        if (data.codigo === 200) {
+          alert('Producto agregado a favoritos.');
+        } else {
+          console.error('No se pudo agregar favorito:', data.mensaje);
+        }
+      } catch (error) {
+        console.error('Error al agregar a favoritos:', error);
+      }
+    }    
         
     async function agregarAlCarrito(idProducto) {
         const idUsuario = localStorage.getItem('id_usuario');
@@ -135,7 +176,99 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
+      window.agregarAFavoritos = agregarAFavoritos;
       window.agregarAlCarrito = agregarAlCarrito;
+
+      async function obtenerFavoritos() {
+        const idUsuario = localStorage.getItem('id_usuario');
+        const token = localStorage.getItem('token');
+      
+        if (!idUsuario || !token) return [];
+      
+        try {
+          const res = await fetch(`http://localhost:4000/api/obtenerFavoritos/${idUsuario}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+      
+          const data = await res.json();
+          return data.codigo === 200 ? data.payload : [];
+      
+        } catch (error) {
+          console.error('Error al obtener favoritos:', error);
+          return [];
+        }
+      }
+
+      async function mostrarFavoritosEnDialog() {
+        const favoritos = await obtenerFavoritos();
+        const productosData = await getProductos(); // Función que ya tenés
+        const productos = productosData?.payload || [];
+      
+        const favoritosContainer = document.getElementById('favoritos-container');
+        favoritosContainer.innerHTML = '';
+      
+        const productosFavoritos = productos.filter(p => 
+          favoritos.some(fav => fav.id_producto === p.id_producto)
+        );
+      
+        if (productosFavoritos.length === 0) {
+          favoritosContainer.innerHTML = '<p>No tienes productos en favoritos.</p>';
+          return;
+        }
+      
+        productosFavoritos.forEach(producto => {
+          const item = document.createElement('div');
+          item.classList.add('favorito-item');
+      
+          item.innerHTML = `
+            <img src="https://placehold.co/150x100?text=${producto.producto}" alt="${producto.producto}">
+            <div>
+              <h4>${producto.producto}</h4>
+              <p>$${producto.precio}</p>
+              <button onclick="eliminarFavorito(${producto.idProducto})">Eliminar</button>
+            </div>
+          `;
+      
+          favoritosContainer.appendChild(item);
+        });
+      }
+
+      window.eliminarFavorito = eliminarFavorito;
+
+      async function eliminarFavorito(idProducto) {
+        const idUsuario = localStorage.getItem('id_usuario');
+        const token = localStorage.getItem('token');
+      
+        try {
+          const res = await fetch('http://localhost:4000/api/eliminarFavorito', {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id_usuario: idUsuario,
+              id_producto: idProducto
+            })
+          });
+      
+          const data = await res.json();
+          console.log('Respuesta del backend:', data); // DEBUG
+      
+          if (data.codigo === 200) {
+            mostrarFavoritosEnDialog(); // Refrescar
+          } else {
+            console.error('Error eliminando producto de favoritos:', data.mensaje);
+          }
+      
+        } catch (error) {
+          console.error('Error al eliminar favorito:', error);
+        }
+      }      
+      
 
     // Mostrar u ocultar botones según login y rol
     function actualizarUI() {

@@ -23,7 +23,7 @@
                     </button>
                 </div>
                 <div>
-                    <a href="#favorites" id="btn-favorites">Favoritos</a>
+                    <button popovertarget="favorites" id="btn-favorites">Favoritos</button>
                 </div>
             </div>
 
@@ -138,6 +138,12 @@
             </p>
         </div>
     </footer>
+
+    <dialog popover id="favorites">
+        <h2>Mis Favoritos</h2>
+        <div id="favoritos-container"></div>
+        <button onclick="document.getElementById('favorites').close()" id="cerrar-favoritos">Cerrar</button>
+    </dialog>
 
     <dialog popover id="log-in">
         <form id="login-form">
