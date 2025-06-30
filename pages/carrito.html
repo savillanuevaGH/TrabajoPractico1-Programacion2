@@ -39,7 +39,39 @@
     </header>
     <main>
         <section id="carrito-items" class="product-container"></section>
-        <div id="carrito-total"></div>
+        <div style="display: flex; align-items: center; justify-content: space-around; padding: 1rem; border-top: 1px solid currentColor;">
+            <em id="carrito-total"></em>
+            <button popovertarget="pay-dialog" class="big">Pagar</button>
+        </div>
+        <dialog popover id="pay-dialog">
+            <div id="pago-container">
+                <h2>Resumen de tu compra</h2>
+                <div id="productos-lista"></div>
+                <p id="total">Total: $0</p>
+              
+                <label for="tipo-pago">Tipo de pago:</label>
+                <select id="tipo-pago">
+                  <option value="">Seleccione</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="debito">Débito</option>
+                  <option value="credito">Crédito</option>
+                </select>
+              
+                <div id="datos-tarjeta" style="display: none;">
+                  <label>Número de tarjeta:</label>
+                  <input type="text" id="numero-tarjeta" maxlength="16">
+              
+                  <label>Fecha de vencimiento:</label>
+                  <input type="month" id="fecha-vencimiento">
+              
+                  <label>Nombre en la tarjeta:</label>
+                  <input type="text" id="nombre-tarjeta">
+                </div>
+              
+                <button id="btn-pagar" disabled>Pagar</button>
+                <p id="mensaje-pago" style="color: green;"></p>
+              </div>              
+        </dialog>
     </main>
     <footer>
         <div class="footer__section">
@@ -85,6 +117,39 @@
             </p>
         </div>
     </footer>
+
+    <style>
+        .pago-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-top: 1px solid currentColor;
+        }
+
+        .productos-lista {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-top: 1px solid currentColor;
+        }
+
+        #total {
+            font-size: medium;
+            font-weight: bold;
+        }
+
+        #btn-pagar {
+            background-color: olivedrab;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+    </style>
 
     <script type="module" src="../js/getCart.js"></script>
 

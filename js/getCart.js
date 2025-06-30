@@ -105,3 +105,82 @@ document.addEventListener('DOMContentLoaded', async () => {
     totalElement.innerHTML = `<strong>Total:</strong> $${total}`;
   }
 });
+
+//Pagos
+document.addEventListener('DOMContentLoaded', async () => {
+  const idUsuario = localStorage.getItem('id_usuario');
+  const token = localStorage.getItem('token');
+  const productosLista = document.getElementById('productos-lista');
+  const totalElement = document.getElementById('total');
+  const tipoPago = document.getElementById('tipo-pago');
+  const datosTarjeta = document.getElementById('datos-tarjeta');
+  const numeroTarjeta = document.getElementById('numero-tarjeta');
+  const fechaVencimiento = document.getElementById('fecha-vencimiento');
+  const nombreTarjeta = document.getElementById('nombre-tarjeta');
+  const btnPagar = document.getElementById('btn-pagar');
+  const mensajePago = document.getElementById('mensaje-pago');
+
+  let total = 0;
+
+  if (!idUsuario || !token) {
+    productosLista.innerHTML = '<p>Debes iniciar sesión para ver tu carrito.</p>';
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:4000/api/obtenerProductosCarrito/${idUsuario}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await res.json();
+    if (data.codigo !== 200) throw new Error(data.mensaje);
+
+    const productos = data.payload || [];
+
+    if (productos.length === 0) {
+      productosLista.innerHTML = '<p>No hay productos en el carrito.</p>';
+      return;
+    }
+
+    productos.forEach(producto => {
+      total += producto.precio;
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <p><strong>${producto.producto}</strong> - $${producto.precio}</p>
+        <p>Color: ${producto.color}, Talle: ${producto.talle}</p>
+        <hr>
+      `;
+      productosLista.appendChild(div);
+    });
+
+    totalElement.textContent = `Total: $${total}`;
+
+  } catch (err) {
+    console.error('Error al obtener productos del carrito:', err);
+    productosLista.innerHTML = '<p>Error al cargar los productos.</p>';
+  }
+
+  tipoPago.addEventListener('change', validarFormulario);
+  [numeroTarjeta, fechaVencimiento, nombreTarjeta].forEach(el => el.addEventListener('input', validarFormulario));
+
+  function validarFormulario() {
+    const metodo = tipoPago.value;
+    const requiereTarjeta = metodo === 'debito' || metodo === 'credito';
+
+    datosTarjeta.style.display = requiereTarjeta ? 'block' : 'none';
+
+    const camposLlenos = requiereTarjeta
+      ? numeroTarjeta.value && fechaVencimiento.value && nombreTarjeta.value
+      : metodo !== '';
+
+    btnPagar.disabled = !camposLlenos;
+  }
+
+  btnPagar.addEventListener('click', () => {
+    mensajePago.textContent = 'Pago aprobado con éxito ✅';
+  });
+});
