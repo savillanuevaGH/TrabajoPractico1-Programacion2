@@ -7,18 +7,34 @@
 }
 
 header {
-    width: 100%;
+    min-width: 100%;
     padding: .5rem 1rem;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template: 'header header' 'filters filters';
+    gap: .8rem;
     background-color: var(--color-header-bg);
     backdrop-filter: blur(2px);
     border-bottom: 2px solid var(--color-text);
 
     position: sticky;
     top: 0;
+    z-index: 1;
+}
+
+.header__main {
+    grid-area: header;
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filters {
+    grid-area: filters;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 header .icon:not(button svg) {

@@ -11,63 +11,93 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLogout = document.getElementById('btn-logout');
     const username = document.getElementById('username');
 
-    async function mostrarProductos() {
+    async function cargarCategorias() {
+        const categoriasRespuesta = await getCategorias();
+        const select = document.getElementById('categories-filter');
+      
+        if (!categoriasRespuesta?.payload || !select) return;
+      
+        categoriasRespuesta.payload.forEach(cat => {
+          const option = document.createElement('option');
+          option.value = cat.id_categoria;
+          option.textContent = cat.nombre;
+          select.appendChild(option);
+        });
+      }      
+      
+
+      async function mostrarProductos() {
         const productosRespuesta = await getProductos();
         const categoriasRespuesta = await getCategorias();
-      
-        if (!productosRespuesta || !productosRespuesta.payload) {
-          console.error('No se recibieron productos.');
-          return;
-        }
-      
+        const productContainer = document.getElementById('products');
+
+        const generoSeleccionado = document.getElementById('gender-filter').value;
+        const categoriaSeleccionada = document.getElementById('categories-filter').value;
+
+        if (!productosRespuesta?.payload || !categoriasRespuesta?.payload || !productContainer) return;
+
         const productos = productosRespuesta.payload;
         const categorias = categoriasRespuesta.payload;
-        const productContainer = document.getElementById('products');
-      
-        if (!productContainer) {
-          console.error('Contenedor de productos no encontrado');
-          return;
-        }
-      
         productContainer.innerHTML = '';
+
+        const productosFiltrados = productos.filter(prod => {
+            const coincideGenero = generoSeleccionado === 'all' || prod.genero === String(generoSeleccionado);
+            const coincideCategoria = categoriaSeleccionada === 'all' || String(prod.idCategoria || prod.id) === String(categoriaSeleccionada);
+            return coincideGenero && coincideCategoria;
+          });
+
+        if (productosFiltrados.length === 0) {
+            productContainer.innerHTML = '<p>No hay productos en esta categoría.</p>';
+            return;
+        }
+
+          console.log(productosFiltrados);
+          console.log(categorias);
       
-        productos.forEach(producto => {
-          const productCard = document.createElement('article');
-          const categoria = categorias.find(cat => cat.id === producto.id_categoria);
-          productCard.classList.add('product-card');
+        productosFiltrados.forEach(producto => {
+            const categoria = categorias.find(cat => 
+                String(cat.id_categoria || cat.id) === String(producto.idCategoria)
+            );                           
+            const productCard = document.createElement('article');
+            productCard.classList.add('product-card');
       
           productCard.innerHTML = `
             <img src="https://placehold.co/300x200/png?text=${producto.producto}" alt="${producto.producto}" class="product-img" />
             <div class="product-details">
                 <h2>${producto.producto}</h2>
                 <p class="description">${producto.descripcion}</p>
-      
-                <p><strong>Categoría: </strong>${categoria.nombre}</p>
-                <p><strong>Talles:</strong> ${producto.talles || 'No especificado'}</p>
-                <p><strong>Color:</strong> ${producto.color || 'No especificado'}</p>
-                <p><strong>Stock:</strong> ${producto.stock || 0} unidades</p>
+                <p><strong>Categoría:</strong> ${categoria?.nombre || 'Sin categoría'}</p>
                 <p><strong>Precio:</strong> $${producto.precio}</p>
-      
+
                 <div class="cuotas">
-                    <label for="cuotas-${producto.id_producto}">Cuotas:</label>
-                    <select id="cuotas-${producto.id_producto}">
-                        <option value="1">1 cuota</option>
-                        <option value="3">3 cuotas</option>
-                        <option value="6">6 cuotas</option>
-                        <option value="9">9 cuotas</option>
-                        <option value="12">12 cuotas</option>
-                    </select>
-                    <p>Precio por cuota: $${Math.floor(producto.precio / 1)}</p>
-                </div>
-      
-                <button class="add-to-cart">Agregar al carrito</button>
-                <p class="sin-stock ${producto.stock === 0 ? '' : 'hidden'}">Sin stock disponible</p>
+            <label for="cuotas">Cuotas:</label>
+                <select id="cuotas">
+                    <option value="1">1 cuota</option>
+                    <option value="3">3 cuotas</option>
+                    <option value="6">6 cuotas</option>
+                    <option value="9">9 cuotas</option>
+                    <option value="12">12 cuotas</option>
+                </select>
+            <p id="precio-cuota">${producto.precio || 'Sin asignar'}</p>
+        </div>
             </div>
-          `;
+            <button id="add-to-cart">Agregar al carrito</button>
+    `;
       
           productContainer.appendChild(productCard);
         });
-      }      
+      }
+    
+    const genderSelect = document.getElementById('gender-filter');
+    genderSelect.addEventListener('change', async (e) => {
+        await mostrarProductos();
+    }); 
+
+    const categoriesSelect = document.getElementById('categories-filter');
+        categoriesSelect.addEventListener('change', async (e) => {
+            await mostrarProductos();
+        }); 
+        
 
     // Mostrar u ocultar botones según login y rol
     function actualizarUI() {
@@ -94,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btnGestionar.style.display = 'none';
         }
 
+        cargarCategorias();
         mostrarProductos();
     }
 
