@@ -1,6 +1,7 @@
 @import url('./header.css');
 @import url('./dialog.css');
 @import url('./footer.css');
+@import url('./productCard.css');
 
 /* Modo Claro */
 :root {
