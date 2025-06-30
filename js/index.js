@@ -1,6 +1,52 @@
 import { registrarUsuario } from './registarUsuario.js';
+import { loginUsuario } from './logIn.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const btnLogin = document.getElementById('btn-to-logIn');
+    const btnRegister = document.getElementById('btn-to-register');
+    const btnCarrito = document.getElementById('cart');
+    const btnFavoritos = document.getElementById('btn-favorites');
+    const btnGestionar = document.getElementById('btn-gestionar-productos');
+    const btnLogout = document.getElementById('btn-logout');
+    const username = document.getElementById('username');
+
+    // Mostrar u ocultar botones según login y rol
+    function actualizarUI() {
+        const token = localStorage.getItem('token');
+        const rol = localStorage.getItem('rol');
+        const nombre = localStorage.getItem('usuarioNombre');
+
+        const logueado = !!token;
+
+        btnLogin.style.display = logueado ? 'none' : 'inline-block';
+        btnRegister.style.display = logueado ? 'none' : 'inline-block';
+        btnCarrito.style.display = logueado ? 'inline-block' : 'none';
+        btnFavoritos.style.display = logueado ? 'inline-block' : 'none';
+        btnLogout.style.display = logueado ? 'inline-block' : 'none';
+        username.textContent = localStorage.getItem('usuarioNombre') || 'Usuario';
+
+        if (logueado) {
+            username.textContent = nombre || 'Usuario';
+        }
+
+        if (logueado && rol === 'admin') {
+            btnGestionar.style.display = 'inline-block';
+        } else {
+            btnGestionar.style.display = 'none';
+        }
+    }
+
+    // Logout
+    btnLogout?.addEventListener('click', () => {
+        localStorage.clear();
+        location.reload();
+    });
+
+    actualizarUI();
+
+    //Registrar usuarios
+
+    //Formulario de registro
     const registerForm = document.getElementById('register-form');
     const messageContainer = document.getElementById('message-container');
     const registerDialog = document.getElementById('register');
@@ -64,30 +110,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función auxiliar para validación de email (básica)
     function isValidEmail(email) {
-        // Expresión regular simple para validación de email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-});
 
-import { loginUsuario } from './logIn.js';
+    //LogIn
 
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('login-form');
-
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (event) => {
-      event.preventDefault(); // evita recargar la página
-
-      const email = document.getElementById('user-email').value;
-      const password = document.getElementById('user-password').value;
-
-      if (!email || !password) {
-        alert('Por favor, completá todos los campos.');
-        return;
-      }
-
-      await loginUsuario(email, password);
-    });
-  }
+    //Formulario de LogIn
+    const loginForm = document.getElementById('login-form');
+    const loginDialog = document.getElementById('log-in');
+  
+    if (loginForm && loginDialog) {
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+  
+        //Datos del formulario
+        const email = document.getElementById('user-email').value;
+        const password = document.getElementById('user-password').value;
+  
+        if (!email || !password) {
+          alert('Por favor, completá todos los campos.');
+          return;
+        }
+  
+        const result = await loginUsuario(email, password);
+  
+        if (result.success) {
+            loginDialog.close();
+            location.reload();
+            actualizarUI();
+        } else {
+          alert('Error: ' + result.error);
+        }
+      });
+    }
 });
