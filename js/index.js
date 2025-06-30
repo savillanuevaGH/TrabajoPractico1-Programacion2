@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p id="precio-cuota">${producto.precio || 'Sin asignar'}</p>
         </div>
             </div>
-            <button id="add-to-cart">Agregar al carrito</button>
+            <button id="add-to-cart" onclick="agregarAlCarrito(${producto.idProducto})">Agregar al carrito</button>
     `;
       
           productContainer.appendChild(productCard);
@@ -94,10 +94,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }); 
 
     const categoriesSelect = document.getElementById('categories-filter');
-        categoriesSelect.addEventListener('change', async (e) => {
-            await mostrarProductos();
-        }); 
+    categoriesSelect.addEventListener('change', async (e) => {
+        await mostrarProductos();
+    }); 
         
+    async function agregarAlCarrito(idProducto) {
+        const idUsuario = localStorage.getItem('id_usuario');
+        const token = localStorage.getItem('token');
+      
+        if (!idUsuario || !token) {
+          alert('Debes iniciar sesión para agregar productos al carrito.');
+          return;
+        }
+      
+        try {
+          const res = await fetch('http://localhost:4000/api/agregarACarrito', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id_inventario: Number(idProducto),
+              id_usuario: Number(idUsuario)
+            })
+          });
+      
+          const data = await res.json();
+      
+          if (data.codigo === 200) {
+            alert('Producto agregado al carrito con éxito ✅');
+          } else {
+            console.error('Error:', data.mensaje);
+            alert('No se pudo agregar al carrito.');
+          }
+      
+        } catch (error) {
+          console.error('Error al agregar al carrito:', error);
+          alert('Ocurrió un error al agregar al carrito.');
+        }
+      }
+
+      window.agregarAlCarrito = agregarAlCarrito;
 
     // Mostrar u ocultar botones según login y rol
     function actualizarUI() {
