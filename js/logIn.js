@@ -14,6 +14,7 @@ export async function loginUsuario(email, pass) {
     const usuario = data.payload[0];
     localStorage.setItem('token', data.jwt);
     localStorage.setItem('rol', usuario.rol);
+    localStorage.setItem('id_usuario', usuario.id_usuario);
     localStorage.setItem('usuarioNombre', usuario.nombre);
 
     console.log('Login exitoso. Token guardado:', data.jwt);
