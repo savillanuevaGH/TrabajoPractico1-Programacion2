@@ -79,6 +79,16 @@ Desarrollar una aplicación web que permita:
 
 ---
 
+> [!TIP]
+> Ejecutar los inserts de la base de datos que están en `insert.sql`
+
+> [!WARNING] 
+> TUVIMOS QUE HACER UNA MODIFICACION EN EL BACKEND PARA QUE FUNCIONEN VARIOS METODOS.
+>
+> Por eso le enviamos ambos archivos, ademas delos insert del sql.
+
+---
+
 ## 🧑‍💼 Autores
 
 Desarrollado por el grupo de la materia como parte del Trabajo Práctico 1.
